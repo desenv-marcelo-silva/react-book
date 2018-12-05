@@ -1,4 +1,5 @@
 # react
 
 Created to learn React.
-Start by Stoyan Stefanov book.
+Started to study Stoyan Stefanov book:
+. First steps with REACT.
