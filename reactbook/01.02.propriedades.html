@@ -87,7 +87,6 @@
         );
         */
 
-        
         var logMixin = {
             _log: function(metodo, args) {
                 console.log(this.name + "::" + metodo, args)
@@ -116,18 +115,23 @@
         
         var Counter = React.createClass({
             name: "Counter",
-            mixins: [logMixin],
+            //mixins: [logMixin],
             propTypes: {
                 count: React.PropTypes.number.isRequired,
             },
+            shouldComponentUpdate: function(nextProps, nextState_ignore) {
+                console.log(nextProps, nextState_ignore);
+                return nextProps.count !== this.props.count;
+            },
             render: function() {
+                console.log(this.name + "::render()");
                 return React.DOM.span(null, this.props.count);
             }
         });
-                
+
         var TextAreaCounter = React.createClass({
             name: "TextAreaCounter",
-            mixins: [logMixin], // Pode ser colocado vários mixins aqui separados com vírgula que o react mescla
+            //mixins: [logMixin], // Pode ser colocado vários mixins aqui separados com vírgula que o react mescla
             propTypes: {
                 text: React.PropTypes.string,
             },
@@ -150,7 +154,7 @@
                 }
             },
             render: function() {
-                console.log('render de componente');
+                console.log(this.name + "::render() componente");
                 var counter = null;
                 if (this.state.text.length > 0) {
                     counter = React.DOM.h3(null,
