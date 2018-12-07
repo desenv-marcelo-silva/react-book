@@ -56,7 +56,7 @@
         );
         */
 
-        // valores default de propriedades
+        /* valores default de propriedades
         var componente = React.createClass({
             propTypes: {
                 firstName: React.PropTypes.string.isRequired,
@@ -85,7 +85,48 @@
             }),
             document.getElementById("app")
         );
+        */
+        var TextAreaCounter = React.createClass({
+            propTypes: {
+                text: React.PropTypes.string,
+            },
+            _textChange: function(ev) {
+                console.log('_textChange');
+                this.setState({
+                    text: ev.target.value,
+                });
+            },
+            getDefaultProps: function() {
+                console.log('get default props');
+                return {
+                    text: '',
+                }
+            },
+            getInitialState: function() {
+                console.log('initial state');
+                return {
+                    text: this.props.text,
+                }
+            },
+            render: function() {
+                console.log('render de componente');
+                return React.DOM.div(null,
+                    React.DOM.textarea({
+                        //defaultValue: this.props.text,
+                        value: this.state.text,
+                        onChange: this._textChange,
+                    }),
+                    React.DOM.h3(null, this.state.text.length)
+                );
+            }
+        });
 
+        ReactDOM.render(
+            React.createElement(TextAreaCounter, {
+                text: "Marcelo",
+            }),
+            document.getElementById("app")
+        );
     </script>
 </body>
 </html>
