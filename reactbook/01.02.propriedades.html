@@ -86,6 +86,8 @@
             document.getElementById("app")
         );
         */
+
+        
         var logMixin = {
             _log: function(metodo, args) {
                 console.log(this.name + "::" + metodo, args)
@@ -111,6 +113,18 @@
                 this._log('componentDidMount', arguments)
             }            
         }
+        
+        var Counter = React.createClass({
+            name: "Counter",
+            mixins: [logMixin],
+            propTypes: {
+                count: React.PropTypes.number.isRequired,
+            },
+            render: function() {
+                return React.DOM.span(null, this.props.count);
+            }
+        });
+                
         var TextAreaCounter = React.createClass({
             name: "TextAreaCounter",
             mixins: [logMixin], // Pode ser colocado vários mixins aqui separados com vírgula que o react mescla
@@ -137,13 +151,22 @@
             },
             render: function() {
                 console.log('render de componente');
+                var counter = null;
+                if (this.state.text.length > 0) {
+                    counter = React.DOM.h3(null,
+                        React.createElement(Counter, {
+                            count: this.state.text.length,
+                        })
+                    );
+                }
                 return React.DOM.div(null,
                     React.DOM.textarea({
                         //defaultValue: this.props.text,
                         value: this.state.text,
                         onChange: this._textChange,
                     }),
-                    React.DOM.h3(null, this.state.text.length)
+                    //React.DOM.h3(null, this.state.text.length)
+                    counter
                 );
             }
         });
@@ -151,9 +174,7 @@
         // Permite manipular de fora do react.
         var myComponent = 
             ReactDOM.render(
-            React.createElement(TextAreaCounter, {
-                text: "Marcelo",
-            }),
+                React.createElement(TextAreaCounter, { text: "Marcelo", }),
             document.getElementById("app")
         );
         /*
