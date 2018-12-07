@@ -86,7 +86,34 @@
             document.getElementById("app")
         );
         */
+        var logMixin = {
+            _log: function(metodo, args) {
+                console.log(this.name + "::" + metodo, args)
+            },
+            componentWillUpdate: function(){
+                this._log('componentWillUpdate', arguments)
+            },
+            componentWillMount: function(){
+                this._log('componentWillMount', arguments)
+            },
+            componentWillUnmount: function(){
+                this._log('componentWillUnmount', arguments)
+            },
+            componentDidUpdate: function(oldProps, oldState){
+                //if (this.state.text.length > 7) {
+                 //   this.replaceState(oldState);
+                    // this.setState mescla variáveis se for necessário
+                    // this.replaceState troca tudo em state
+                //}
+                this._log('componentDidUpdate', arguments)
+            },
+            componentDidMount: function(){
+                this._log('componentDidMount', arguments)
+            }            
+        }
         var TextAreaCounter = React.createClass({
+            name: "TextAreaCounter",
+            mixins: [logMixin], // Pode ser colocado vários mixins aqui separados com vírgula que o react mescla
             propTypes: {
                 text: React.PropTypes.string,
             },
@@ -121,12 +148,18 @@
             }
         });
 
-        ReactDOM.render(
+        // Permite manipular de fora do react.
+        var myComponent = 
+            ReactDOM.render(
             React.createElement(TextAreaCounter, {
                 text: "Marcelo",
             }),
             document.getElementById("app")
         );
+        /*
+            Acesso à setState({text: "Novo valor"});
+            props e state diretamente...
+        */
     </script>
 </body>
 </html>
