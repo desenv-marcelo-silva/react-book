@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello React-01.02</title>
+</head>
+<body>
+    <div id="app">
+    </div>
+    <script src="react/build/react.js"></script>
+    <script src="react/build/react-dom.js"></script>
+    <script>
+        var Component = React.createClass({
+            render: function() {
+                return React.DOM.span(null, "Componente customizado fact.");
+            }
+        });
+        /*
+        ReactDOM.render(
+            React.createElement(Component),
+            document.getElementById("app"));
+        */
+
+        /* Usando um factory:
+        var ComponentFactory = React.createFactory(Component);
+        ReactDOM.render(
+            ComponentFactory(),
+            document.getElementById("app")
+        );
+        */
+
+        /*
+        ReactDOM.render(
+            React.createElement("span", null, "Hello"),
+            document.getElementById("app")
+        );
+        */
+
+        // uso de propTypes
+        /*
+        var componente = React.createClass({
+            propTypes: {
+                nome: React.PropTypes.string.isRequired,
+            },
+            render: function() {
+                return React.DOM.span(null, "Meu nome é " + this.props.nome);
+            }
+        });
+        
+        ReactDOM.render(
+            React.createElement(componente, {
+                nome: "Marcelo" // Se não especificado apresenta warning no console,
+                //nome: 123 --> especificado o tipo string então, se for número apresenta warning no console
+            }),
+            document.getElementById("app")
+        );
+        */
+
+        // valores default de propriedades
+        var componente = React.createClass({
+            propTypes: {
+                firstName: React.PropTypes.string.isRequired,
+                middleName: React.PropTypes.string,
+                familyName: React.PropTypes.string.isRequired,
+                address: React.PropTypes.string,
+            },
+            getDefaultProps: function() {
+                return {
+                    middleName: '',
+                    address: 'n/a',
+                }
+            },
+            render: function() {
+                return React.DOM.span(null, "First name: " + this.props.firstName + 
+                "Middle name: " + this.props.middleName + 
+                "Family name: " + this.props.familyName +
+                "Adress: " + this.props.address);
+            }
+        });
+        ReactDOM.render(
+            React.createElement(componente, {
+                firstName: "Marcelo",
+                middleName: "Lopes",
+                familyName: "da Silva",
+            }),
+            document.getElementById("app")
+        );
+
+    </script>
+</body>
+</html>
