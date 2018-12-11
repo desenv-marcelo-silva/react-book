@@ -33,17 +33,39 @@
                 headers: React.PropTypes.arrayOf(React.PropTypes.string),
                 initialData: React.PropTypes.arrayOf(React.PropTypes.arrayOf(React.PropTypes.string))
             },
+            _sort: function(e) {
+                var column = e.target.cellIndex;
+                var data = this.state.data.slice();
+                var descending = this.state.sortBy == column && !this.state.descending;
+                data.sort(function(a,b){
+                    return descending
+                        ? (a[column] < b[column] ? 1 : -1)
+                        : (a[column] > b[column] ? 1 : -1);
+                });
+                this.setState({
+                    data: data,
+                    sortBy: column,
+                    descending: descending
+                });
+            },
             getInitialState: function() {
-                return {data: this.props.initialData};
+                return {
+                    data: this.props.initialData,
+                    sortBy: null,
+                    descending: false,
+                };
             },
             render: function() {
                 return (
                     React.DOM.table({className: "table is-fullwidth table is-narrow is-bordered is-striped"},
-                        React.DOM.thead({className: "thead"},
+                        React.DOM.thead({className: "thead", onClick:this._sort},
                             React.DOM.tr(null,
                                 this.props.headers.map(function(title, idx){
+                                    if (this.state.sortBy === idx){
+                                        title += this.state.descending ? " \u2191" : " \u2193"
+                                    }
                                     return React.DOM.th({key: idx}, title);
-                                })
+                                }, this)
                             )
                         ),
                         React.DOM.tbody({className: "tbody"},
