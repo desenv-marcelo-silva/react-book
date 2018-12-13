@@ -107,6 +107,25 @@
                     data: data,
                 });
             },
+            _download: function(formato, ev){
+                var contents = formato === 'json'
+                    ? JSON.stringify(this.state.data)
+                    : this.state.data.reduce(function(result, row){
+                        return result 
+                            + row.reduce(function(rowresult, cell, idx) {
+                                return rowresult
+                                    + '"'
+                                    + cell.replace(/"/g, '""')
+                                    + '"'
+                                    + (idx < row.length - 1 ? ',' : '');
+                            }, '')
+                        + "\n";
+                    }, '');
+                var URL = window.URL || window.webkitURL;
+                var blob = new Blob([contents], {type: 'text/' + formato});
+                ev.target.href = URL.createObjectURL(blob);
+                ev.target.download = 'data.' + formato;
+            },
             _sort: function(e) {
                 var column = e.target.cellIndex;
                 var data = this.state.data.slice();
@@ -150,12 +169,19 @@
                 }
             },
             _renderToolBar: function() {
-                return React.DOM.button(
-                    {
-                        onClick: this._toggleSearch,
-                        className: 'toolbar',
-                    },
-                    'buscar'
+                return React.DOM.div({className: 'toolbar'},
+                    React.DOM.button(
+                        {
+                            onClick: this._toggleSearch
+                        }, 'buscar'),
+                    React.DOM.a({
+                        onClick: this._download.bind(this, 'json'),
+                        href: 'data.json'
+                        }, 'Exportar JSON'),
+                    React.DOM.a({
+                        onClick: this._download.bind(this, 'csv'),
+                        href: 'data.csv'
+                    }, 'Exportar CSV')
                 );
             },
             _renderTable: function() {
